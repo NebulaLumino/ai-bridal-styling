@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, baseURL: "https://api.deepseek.com/v1" });
+const getClient = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY || "sk-dummy", baseURL: "https://api.deepseek.com/v1" });
 export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
-    const completion = await client.chat.completions.create({
+    const completion = await getClient().chat.completions.create({
       model: "deepseek-chat",
       messages: [{ role: "user", content: `You are a bridal stylist. Create a complete bridal styling plan for: ${prompt}. Include dress silhouette, fabric, accessories, bridesmaid styling, venue-appropriate suggestions, budget breakdown, and timeline.` }],
       max_tokens: 600,
